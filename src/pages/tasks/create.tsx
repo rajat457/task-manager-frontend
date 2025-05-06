@@ -177,7 +177,7 @@ export default function CreateTask() {
             <option value="">Assign to...</option>
             {users.map((u) => (
               <option key={u.id} value={u.id}>
-                {u.email}
+                {u.email.split('@')[0]}
               </option>
             ))}
           </select>
