@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
 import LogoutButton from './LogoutButton'
@@ -47,7 +47,7 @@ export default function Navbar() {
   )
 }
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   navbar: {
     padding: '1rem 2rem',
     backgroundColor: '#007bff',

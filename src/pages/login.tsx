@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, CSSProperties } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -81,7 +81,7 @@ export default function LoginPage() {
   )
 }
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     maxWidth: '400px',
     margin: '2rem auto',

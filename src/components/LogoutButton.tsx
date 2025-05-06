@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { CSSProperties, useState } from 'react'
 import { useRouter } from 'next/router'
 import { supabase } from '@/lib/supabaseClient'
 
@@ -26,8 +26,7 @@ export default function LogoutButton() {
     </button>
   )
 }
-
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   logoutButton: {
     color: 'white',
     backgroundColor: 'transparent',

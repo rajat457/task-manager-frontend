@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, CSSProperties } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function TaskDetail() {
@@ -142,7 +142,7 @@ export default function TaskDetail() {
   )
 }
 
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     padding: '2rem',
     maxWidth: '600px',
