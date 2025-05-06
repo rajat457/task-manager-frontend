@@ -12,15 +12,15 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+  
     if (!email || !password) {
       setError('Email and password are required.')
       return
     }
-
+  
     setError('')
     setLoading(true)
-
+  
     try {
       if (isLogin) {
         // Login
@@ -32,11 +32,26 @@ export default function LoginPage() {
         }
       } else {
         // Sign up
-        const { error } = await supabase.auth.signUp({ email, password })
+        const { data, error } = await supabase.auth.signUp({ email, password })
         if (error) {
           setError(error.message)
         } else {
-          alert('Check your email for confirmation link!')
+          // ✅ Insert into 'users' table after successful signup
+          const user = data.user
+          if (user) {
+            const { error: insertError } = await supabase.from('users').insert([
+              {
+                id: user.id,
+                email: user.email
+              }
+            ])
+            if (insertError) {
+              console.error('Insert user error:', insertError.message)
+              setError('Account created, but failed to save user data.')
+            } else {
+              alert('Check your email for confirmation link!')
+            }
+          }
         }
       }
     } catch (err) {
@@ -44,7 +59,7 @@ export default function LoginPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }  
 
   return (
     <div style={styles.container}>

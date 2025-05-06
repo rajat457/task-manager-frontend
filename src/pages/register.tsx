@@ -11,24 +11,39 @@ export default function Register() {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+  
     if (!email || !password) {
       setError('Please fill in both email and password.')
       return
     }
-
+  
     setError('')
     setLoading(true)
-
+  
     try {
-      const { error: insertError } = await supabase.from('users').insert([
-        { email, password } // ⚠️ Plain text, not secure
-      ])
-
-      if (insertError) {
-        setError(insertError.message)
+      const { data, error } = await supabase.auth.signUp({ email, password })
+  
+      if (error) {
+        setError(error.message)
       } else {
-        router.push('/login')
+        // ✅ Insert user into your 'users' table
+        const user = data.user
+        if (user) {
+          const { error: insertError } = await supabase.from('users').insert([
+            {
+              id: user.id,
+              email: user.email,
+              // don't store password here if you're using Supabase Auth
+            }
+          ])
+  
+          if (insertError) {
+            console.error('Error inserting into users table:', insertError.message)
+            setError('Registered, but failed to save user details.')
+          } else {
+            router.push('/login')
+          }
+        }
       }
     } catch (err) {
       setError('Something went wrong. Please try again later.')
@@ -36,6 +51,7 @@ export default function Register() {
       setLoading(false)
     }
   }
+  
 
   return (
     <div style={styles.container}>
