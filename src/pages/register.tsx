@@ -21,9 +21,12 @@ export default function Register() {
     setLoading(true)
 
     try {
-      const { error } = await supabase.auth.signUp({ email, password })
-      if (error) {
-        setError(error.message)
+      const { error: insertError } = await supabase.from('users').insert([
+        { email, password } // ⚠️ Plain text, not secure
+      ])
+
+      if (insertError) {
+        setError(insertError.message)
       } else {
         router.push('/login')
       }
